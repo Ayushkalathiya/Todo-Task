@@ -9,11 +9,14 @@ import {
   X
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useUserStore } from "@/store/authStore";
 import { ModeToggle } from "../ModeToggle";
+import { Button } from "../ui/button";
+
+
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -21,6 +24,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const user = useUserStore();
   const userName = user?.user?.name || "John Doe";
+
+  const router = useRouter();
 
   const userInitials = userName
     .split(" ")
@@ -76,14 +81,14 @@ export function Sidebar() {
         <div className="ml-auto flex items-center space-x-4">
           <ModeToggle />
           <div className="relative">
-            <Link href="/profile">
+          
               <div
                 className="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full shadow-md cursor-pointer"
                 title={userName}
               >
                 {userInitials}
               </div>
-            </Link>
+        
           </div>
         </div>
       </nav>
@@ -118,13 +123,14 @@ export function Sidebar() {
 
         {/* Logout Button */}
         <div className="border-t dark:border-gray-800 p-2">
-          <Link
-            href="/logout"
-            className="flex items-center p-2 rounded-lg transition-all duration-200 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900"
+          <Button
+           onClick={() => router.push("/auth/signin")} 
+           variant='outline'
+            className="flex items-center w-full p-2 rounded-lg transition-all duration-200 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900"
           >
             <LogOut className="h-5 w-5 mr-3" />
             Logout
-          </Link>
+          </Button>
         </div>
       </aside>
 

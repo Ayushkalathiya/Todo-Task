@@ -46,6 +46,8 @@ export const useCategoriesStore = create<CategoriesStore>((set) => ({
         id: category.id,
         name: category.name,
       });
+      console.log("response", response);
+      
       set((state) => ({
         categories: state.categories.map((cat) =>
           cat.id === category.id ? response.data.category : cat
@@ -58,7 +60,14 @@ export const useCategoriesStore = create<CategoriesStore>((set) => ({
 
   deleteCategory: async (categoryId) => {
     try {
-      await axios.delete(`${API_URL}/api/categories/${categoryId}`);
+      const response =await axios.delete(`${API_URL}/api/categories/${categoryId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("response", response);
+      
       set((state) => ({
         categories: state.categories.filter(
           (category) => category.id !== categoryId

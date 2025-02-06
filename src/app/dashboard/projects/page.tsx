@@ -20,6 +20,7 @@ import { Project } from "@/types/type";
 import { FolderPlus, Pencil, Plus, Tag, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ProjectsPage() {
   const { projects, addProject, updateProject, deleteProject, setProjects } = useProjectsStore();
@@ -75,6 +76,17 @@ export default function ProjectsPage() {
           const data = await response.json();
           setProjects(data.projects);
         }
+
+        const respons = await fetch("/api/categories", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await respons.json();
+          setCategories(data.categories);
+        }
+
       } catch (error) {
         console.log(error);
       }
@@ -84,35 +96,33 @@ export default function ProjectsPage() {
       }
     
     fetchProjects();
-  }, [setProjects]);
+  }, [setProjects , setCategories]);
 
-  // Fetch categories effect
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch("/api/categories", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setCategories(data.categories);
-      }
-    };
-    fetchCategories();
-  }, [setCategories]);
+
 
   const handleProjectSubmit = async (projectData: Partial<Project>) => {
     if (editingProject) {
-      await updateProject(editingProject.id!, projectData);
+     try {
+       await updateProject(editingProject.id!, projectData);
+       toast.success("Project updated successfully");
+     } catch (error) {
+       toast.error("Failed to update project");
+      
+     }
     } else {
-      await addProject({
-        ...projectData,
-        userId: user?.id || 1,
-        name: projectData.name!,
-        description: projectData.description || "",
-        status: projectData.status || "active",
-      });
+      try {
+        await addProject({
+          ...projectData,
+          userId: user?.id || 1,
+          name: projectData.name!,
+          description: projectData.description || "",
+          status: projectData.status || "active",
+        });
+        toast.success("Project added successfully");
+      } catch (error) {
+        toast.error("Failed to add project");
+        
+      }
     }
     setIsProjectDialogOpen(false);
     setEditingProject(null);
@@ -121,10 +131,16 @@ export default function ProjectsPage() {
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedProject && newCategory.trim()) {
-      await addCategory({
-        category: newCategory,
-        projectId: selectedProject.id,
-      });
+      try {
+        await addCategory({
+          category: newCategory,
+          projectId: selectedProject.id,
+        });
+        toast.success("Category added successfully");
+      } catch (error) {
+        toast.error("Failed to add category");
+        
+      }
       setNewCategory("");
       setIsCategoryDialogOpen(false);
     }
@@ -137,13 +153,24 @@ export default function ProjectsPage() {
 
   const handleDelete = async (projectId: number) => {
     if (confirm("Are you sure you want to delete this project?")) {
-      await deleteProject(projectId);
+      try {
+        
+        await deleteProject(projectId);
+        toast.success("Project deleted successfully");
+      } catch (error) {
+        toast.error("Failed to delete project");
+      }
     }
   };
 
   const handleDeleteCategory = async (categoryId: number) => {
     if (confirm("Are you sure you want to delete this category?")) {
-      await deleteCategory(categoryId);
+      try {
+        await deleteCategory(categoryId);
+        toast.success("Category deleted successfully");
+      } catch (error) {
+        toast.error("Failed to delete category");
+      }
     }
   };
 

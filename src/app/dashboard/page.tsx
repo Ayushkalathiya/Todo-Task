@@ -79,15 +79,8 @@ export async function getCategories() {
 
       const categories = response.data.categories;
 
-    
-      const formattedCategories = categories.map((category: Category) => ({
-        id: category.id,
-        name: category.name,
-      }));
 
-      // console.log("formattedCategories", formattedCategories);
-
-      return formattedCategories;
+      return categories;
     } else {
       return { error: "Failed to fetch categories" };
     }
@@ -231,11 +224,11 @@ export default function DashboardPage() {
       <div className="flex gap-4 mb-6">
         <Button className="bg-blue-600 text-white flex items-center space-x-2">
           <Plus className="w-4 h-4" />
-          <span onClick={() => router.push("/dashboard/task")}  >Add Task</span>
+          <span onClick={() => router.push("/dashboard/tasks")}  >Add Task</span>
         </Button>
         <Button className="bg-green-600 text-white flex items-center space-x-2">
           <Plus className="w-4 h-4" />
-          <span onClick={() => router.push("/dashboard/project")}>Create Project</span>
+          <span onClick={() => router.push("/dashboard/projects")}>Create Project</span>
         </Button>
       </div>
 
