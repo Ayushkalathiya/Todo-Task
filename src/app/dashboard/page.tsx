@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar } from "@/components/dashboard/Calendar";
+import Calendar from "@/components/dashboard/Calendar";
 import Dashboard from "@/components/dashboard/Dashboard";
 import { useTasksStore } from "@/store/taskStore";
 import { useProjectsStore } from "@/store/projectStore";
@@ -240,7 +240,7 @@ export default function DashboardPage() {
 
       {/* Calendar Section */}
       <div className="mt-12">
-        <h2 className="text-2xl font-bold">📅 Calendar</h2>
+        {/* <h2 className="text-2xl font-bold">📅 Calendar</h2> */}
         {loading ? <LoadingSkeleton /> : <Calendar />}
       </div>
     </div>
