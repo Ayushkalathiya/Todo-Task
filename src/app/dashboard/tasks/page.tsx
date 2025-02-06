@@ -48,6 +48,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 
 export default function TasksPage() {
@@ -147,6 +148,7 @@ export default function TasksPage() {
     try {
       if (editingTask) {
         await updateTask(editingTask.id!, taskData);
+        toast.success("Task updated successfully");
       } else {
         await addTask({
           ...taskData,
@@ -154,11 +156,13 @@ export default function TasksPage() {
           status: "pending",
           dueDate: taskData.dueDate || "",
         });
+        toast.success("Task added successfully");
       }
       setIsDialogOpen(false);
       setEditingTask(null);
     } catch (error) {
       console.error("Error submitting task:", error);
+      toast.error("Failed to add task");
     }
   };
 
@@ -171,15 +175,27 @@ export default function TasksPage() {
     if (confirm("Are you sure you want to delete this task?")) {
       try {
         await deleteTask(taskId);
+        toast.success("Task deleted successfully");
       } catch (error) {
         console.error("Error deleting task:", error);
+        toast.error("Failed to delete task");
       }
     }
   };
 
-  const handleCompleteTask = async (taskId: number) => {
+  const handleCompleteTask = async (taskId: number , completeed : boolean ) => {
     try {
-      await completeTask(taskId);
+      try {
+        await completeTask(taskId);
+        if(completeed){
+          toast.success("Task incompleted successfully");
+        }else{
+          toast.success("Task completed successfully");
+        }
+      } catch (error) {
+        console.error("Error completing task:", error);
+        toast.error("Failed to complete task");
+      }
     } catch (error) {
       console.error("Error completing task:", error);
     }
@@ -362,7 +378,7 @@ export default function TasksPage() {
                             <Button
                               variant="secondary"
                               size="icon"
-                              onClick={() => handleCompleteTask(task.id)}
+                              onClick={() => handleCompleteTask(task.id , task.completed)}
                               className="dark:bg-gray-700 dark:hover:bg-gray-600"
                             >
                               <Undo2 className="h-4 w-4" />
@@ -371,7 +387,7 @@ export default function TasksPage() {
                             <Button
                               variant="outline"
                               size="icon"
-                              onClick={() => handleCompleteTask(task.id)}
+                              onClick={() => handleCompleteTask(task.id , task.completed)}
                               className="dark:border-gray-600 dark:hover:bg-gray-700"
                             >
                               <CheckCircle className="h-4 w-4" />

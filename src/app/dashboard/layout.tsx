@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google"
 import type React from "react"
 import { Sidebar } from "@/components/dashboard/Sidebar"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -44,6 +45,7 @@ export default function RootLayout({
           >
             <div className="max-w-7xl mx-auto">
               {children}
+             
             </div>
           </main>
         </div>

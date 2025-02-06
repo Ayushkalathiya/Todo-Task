@@ -9,6 +9,7 @@ import { useUserStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { register } from "./action";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -29,9 +32,16 @@ export default function SignUpPage() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    
     try {
+
       const user = await register(formData);
       setUser({ id: user.id, name: user.name, email: user.email });
+
+      toast.success("Signup successful. Welcome to TaskMaster!", {
+        duration: 5000,
+      });
+
       router.push("/dashboard");
     } catch (error) {
       console.error("Signup failed", error);
@@ -46,17 +56,17 @@ export default function SignUpPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen flex items-center justify-center"
+      className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900"
     >
-      <Card className="w-full max-w-md p-6 rounded-2xl shadow-xl bg-white/90 backdrop-blur-md">
+      <Card className="w-full max-w-md p-6 rounded-2xl shadow-xl bg-white dark:bg-gray-800 dark:text-white backdrop-blur-md">
         <CardHeader className="space-y-2">
           <div className="flex items-center justify-center space-x-2">
             <CheckSquare className="h-8 w-8 text-primary" />
-            <CardTitle className="text-3xl font-bold text-primary">
+            <CardTitle className="text-3xl font-bold text-primary dark:text-white">
               TaskMaster
             </CardTitle>
           </div>
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-gray-600 dark:text-gray-300">
             Create a new account to get started!
           </p>
         </CardHeader>
@@ -71,7 +81,7 @@ export default function SignUpPage() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="pl-10 bg-white/50"
+                className="pl-10 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </div>
             <div className="relative">
@@ -83,7 +93,7 @@ export default function SignUpPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="pl-10 border-primary/20"
+                className="pl-10 border-primary/20 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </div>
             <div className="relative">
@@ -95,7 +105,7 @@ export default function SignUpPage() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="pl-10 pr-16 bg-white/50"
+                className="pl-10 pr-16 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </div>
 
@@ -103,7 +113,7 @@ export default function SignUpPage() {
               <p className="text-red-500 font-semibold mb-2">{error}</p>
             )}
             <Button
-              className="w-full py-3 px-4"
+              className="w-full py-3 px-4 bg-primary dark:bg-primary-dark text-white"
               type="submit"
               disabled={isLoading}
             >
@@ -114,11 +124,11 @@ export default function SignUpPage() {
               )}
             </Button>
           </form>
-          <div className="mt-4 text-sm text-center text-muted-foreground">
-            Already have an account?{" "}
+          <div className="mt-4 text-sm text-center text-gray-600 dark:text-gray-300">
+            Already have an account? {" "}
             <a
               href="/auth/signin"
-              className="text-primary hover:underline font-medium"
+              className="text-primary dark:text-primary-light hover:underline font-medium"
             >
               Sign in here
             </a>

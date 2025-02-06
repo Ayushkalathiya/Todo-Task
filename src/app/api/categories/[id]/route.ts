@@ -65,12 +65,23 @@ export async function POST(req: NextRequest, { params }: { params: Promise<Route
 }
 
 // Delete Category (DELETE)
-export async function DELETE( { params }: { params: { id: string } }) {
+export async function DELETE( req: NextRequest ,{ params }: { params: { id: string } }) {
   const userId = await authenticateUser()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-
+  
+    if(!params){
+    return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  // console.log(req);
+  
+  // console.log("Inside delete category route");
+  
+  console.log("params", params);
+  
+    
   try {
-    const { id }  = params;
+    const  id   = (await params).id;
+
     const categoryId = id;
 
     const [deletedCategory] = await db
