@@ -12,7 +12,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Plus, Loader, CheckCircle, FileText } from "lucide-react";
-import { Category, Project, Task } from "@/types/type";
+import { Project, Task } from "@/types/type";
 
 // Get all projects -> call api/projects
 export async function getProjects() {

@@ -106,7 +106,7 @@ export default function ProjectsPage() {
        await updateProject(editingProject.id!, projectData);
        toast.success("Project updated successfully");
      } catch (error) {
-       toast.error("Failed to update project");
+       toast.error("Failed to update project " + error); 
       
      }
     } else {
@@ -120,7 +120,7 @@ export default function ProjectsPage() {
         });
         toast.success("Project added successfully");
       } catch (error) {
-        toast.error("Failed to add project");
+        toast.error("Failed to add project" + error);
         
       }
     }
@@ -138,7 +138,7 @@ export default function ProjectsPage() {
         });
         toast.success("Category added successfully");
       } catch (error) {
-        toast.error("Failed to add category");
+        toast.error("Failed to add category" + error);
         
       }
       setNewCategory("");
@@ -158,7 +158,7 @@ export default function ProjectsPage() {
         await deleteProject(projectId);
         toast.success("Project deleted successfully");
       } catch (error) {
-        toast.error("Failed to delete project");
+        toast.error("Failed to delete project"  + error);
       }
     }
   };
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
         await deleteCategory(categoryId);
         toast.success("Category deleted successfully");
       } catch (error) {
-        toast.error("Failed to delete category");
+        toast.error("Failed to delete category" + error);
       }
     }
   };
