@@ -120,7 +120,7 @@ export default function ProjectsPage() {
         });
         toast.success("Project added successfully");
       } catch (error) {
-        toast.error("Failed to add project");
+        toast.error("Failed to add project" + error);
         
       }
     }
