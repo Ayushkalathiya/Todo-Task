@@ -63,7 +63,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (await cookies()).set("authToken", token, {
       path: "/",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60, // 7 days
     });
