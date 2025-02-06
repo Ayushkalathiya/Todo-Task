@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { login } from "./action";
 import { useUserStore } from "@/store/authStore";
-import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
 export default function SignInPage() {
